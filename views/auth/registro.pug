@@ -1,5 +1,28 @@
 extends ../layout/index
 
 block contenido
-    div
-        h2(class="text-center text-2xl font-extrabold") Registro
+    div.py-10
+        h1.text-4xl.my-10.font-extrabold.text-center Bienes
+            span.font-normal Raíces
+        h2(class="text-center text-2xl font-extrabold")=pagina
+
+        div.mt-8.mx-auto.max-w-md
+            div.bg-white.py-8.px-4.shadow
+                form(class="space-y-5")
+                    div
+                        label.block.text-sm.uppercase.text-gray-500.mb-2.font-bold(for="nombre") Nombre
+                        input#nombre.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Nombre" type="text" name="nombre")
+                    div
+                        label.block.text-sm.uppercase.text-gray-500.mb-2.font-bold(for="email") Email de Registro
+                        input#email.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Email" type="email" name="email")
+                    div
+                        label.block.text-sm.uppercase.text-gray-500.mb-2.font-bold(for="password") Password
+                        input#password.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Password" type="password" name="password")
+                    div
+                        label.block.text-sm.uppercase.text-gray-500.mb-2.font-bold(for="repetir_password") Repetir Password
+                        input#repetir_password.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Repite Password" type="password" name="repetir_password")
+
+                    div(class="flex items-center justify-between")
+                        a(class="text-gray-500 text-xs" href="/auth/login") ¿Ya tienes una cuenta? Inicia Sesión
+                        a(class="text-gray-500 text-xs" href="/auth/olvide-password") Olvide mi password
+                    input(type="submit" value="Crear Cuenta" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold cursor-pointer")
