@@ -2,10 +2,8 @@ import express from 'express';
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  res.json({
-    mensaje: 'GET'
-  });
+router.get('/login', (req, res) => {
+  res.render('auth/login');
 });
 
 router.post('/', (req, res) => {
