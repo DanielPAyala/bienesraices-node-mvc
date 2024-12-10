@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/DanielPAyala/bienesraices-node-mvc/issues"
   },
-  "homepage": "https://github.com/DanielPAyala/bienesraices-node-mvc#readme"
+  "homepage": "https://github.com/DanielPAyala/bienesraices-node-mvc#readme",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
 }
