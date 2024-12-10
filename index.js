@@ -1,12 +1,11 @@
 import express from 'express';
+import UserRoutes from './routes/user.routes.js';
 
 // Crear el servidor
 const app = express();
 
 // Rutas
-app.get('/', (req, res) => {
-  res.send('Hola Mundo');
-});
+app.use('/', UserRoutes);
 
 // Definir el puerto y arrancar el servidor
 const port = 3001;
