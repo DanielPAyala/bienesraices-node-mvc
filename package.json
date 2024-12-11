@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js | browser-sync start --files 'src/views/**/*.pug, src/public/**/*.*'"
   },
   "repository": {
     "type": "git",
@@ -30,6 +30,7 @@
     "pug": "^3.0.3"
   },
   "devDependencies": {
+    "browser-sync": "^3.0.3",
     "nodemon": "^3.1.7"
   }
 }
