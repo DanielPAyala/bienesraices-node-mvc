@@ -24,7 +24,7 @@ app.use(express.static('public'));
 app.use('/auth', UserRoutes);
 
 // Definir el puerto y arrancar el servidor
-const port = 3001;
+const port = process.env.PORT || process.env.SERVER_PORT;
 app.listen(port, () => {
   console.log(`Servidor corriendo en http://localhost:${port}`);
 });
