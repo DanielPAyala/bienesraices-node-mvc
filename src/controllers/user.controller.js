@@ -10,4 +10,10 @@ const registerForm = (req, res) => {
   });
 };
 
-export { loginForm, registerForm };
+const forgotPasswordForm = (req, res) => {
+  res.render('auth/forgot-password', {
+    page: 'Recuperar tu acceso a Bienes Raices'
+  });
+};
+
+export { loginForm, registerForm, forgotPasswordForm };
