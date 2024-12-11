@@ -28,7 +28,9 @@
   "homepage": "https://github.com/DanielPAyala/bienesraices-node-mvc#readme",
   "dependencies": {
     "express": "^4.21.2",
-    "pug": "^3.0.3"
+    "mysql2": "^3.11.5",
+    "pug": "^3.0.3",
+    "sequelize": "^6.37.5"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
