@@ -1,7 +1,18 @@
 extends ../layout/index
 
 block content
-  div
-    h2(class="text-center text-2xl font-extrabold") Iniciar sesión
+  div(class="py-10")
+    h1(class="text-4xl my-10 font-extrabold text-center") Bienes
+      span(class="font-normal")  Raices
+    h2(class="text-center text-2xl font-extrabold")=page
 
-
+    div(class="mt-8 mx-auto max-w-md")
+      div(class="bg-white py-8 px-4 shadow")
+        form(class="space-y-6")          
+          div
+            label(class="block text-sm uppercase text-gray-500 mb-2 font-bold" for="email") Correo
+            input(id="email" class="w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400" type="text" name="email" placeholder="Correo")
+          div
+            label(class="block text-sm uppercase text-gray-500 mb-2 font-bold" for="password") Contraseña
+            input(id="password" class="w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400" type="text" name="password" placeholder="Contraseña")          
+          input(type="submit" value="Iniciar Sesión" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold cursor-pointer")
