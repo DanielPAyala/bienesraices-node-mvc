@@ -1,7 +1,9 @@
 const loginForm = (req, res) => {
-  res.render('auth/login');
+  res.render('auth/login', {});
 };
 
-export {
-  loginForm
-}
+const registerForm = (req, res) => {
+  res.render('auth/register', {});
+};
+
+export { loginForm, registerForm };

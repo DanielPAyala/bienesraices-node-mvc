@@ -8,6 +8,9 @@ const app = express();
 app.set('view engine', 'pug');
 app.set('views', './src/views');
 
+// Carpeta publica
+app.use(express.static('public'));
+
 // Rutas
 app.use('/auth', UserRoutes);
 
