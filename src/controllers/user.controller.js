@@ -2,7 +2,6 @@ import { check, validationResult } from 'express-validator';
 import User from '../models/User.model.js';
 import { generateToken } from '../helpers/tokens.js';
 import { registrationEmail } from '../helpers/emails.js';
-import { request } from 'express';
 
 const loginForm = (req, res) => {
   res.render('auth/login', {
@@ -84,14 +83,29 @@ const register = async (req, res) => {
   });
 };
 
-const confirmAccount = (req, res, next) => {
-  const { token } = request.params;
+const confirmAccount = async (req, res) => {
+  const { token } = req.params;
 
   // Verificar si el token es válido
+  const user = await User.findOne({ where: { token } });
+
+  if (!user) {
+    return res.render('auth/confirm-account', {
+      page: 'Error al confirmar tu cuenta',
+      message: 'Token no válido o la cuenta ya ha sido confirmada',
+      error: true
+    });
+  }
 
   // Confirmar cuenta
+  user.token = null;
+  user.confirmed = true;
+  await user.save();
 
-  next();
+  res.render('auth/confirm-account', {
+    page: 'Cuenta Confirmada',
+    message: 'Cuenta confirmada correctamente'
+  });
 };
 
 const forgotPasswordForm = (req, res) => {

@@ -18,7 +18,7 @@ const registrationEmail = async ({name, email, token}) => {
     html: `
       <h1>Hola ${name}</h1>
       <p>Confirma tu cuenta en BienesRaices.com presionando el siguiente enlace</p>
-      <a href="${process.env.SERVER_URL}:${process.env.SERVER_PORT}/confirm-account/${token}">Confirmar cuenta</a>
+      <a href="${process.env.SERVER_URL}:${process.env.SERVER_PORT}/auth/confirm-account/${token}">Confirmar cuenta</a>
 
       <p>Si no creaste una cuenta, ignora este mensaje</p>
     `
