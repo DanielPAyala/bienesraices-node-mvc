@@ -11,7 +11,8 @@ const loginForm = (req, res) => {
 
 const registerForm = (req, res) => {
   res.render('auth/register', {
-    page: 'Crear Cuenta'
+    page: 'Crear Cuenta',
+    csrfToken: req.csrfToken()
   });
 };
 
@@ -30,13 +31,13 @@ const register = async (req, res) => {
     .withMessage('Las contraseñas no coinciden')
     .run(req);
 
-  console.log(req.body);
   let result = validationResult(req);
 
   // Verificar si hay errores
   if (!result.isEmpty()) {
     return res.render('auth/register', {
       page: 'Crear Cuenta',
+      csrfToken: req.csrfToken(),
       errors: result.array(),
       user: {
         name: req.body.name,
@@ -53,6 +54,7 @@ const register = async (req, res) => {
   if (userExist) {
     return res.render('auth/register', {
       page: 'Crear Cuenta',
+      csrfToken: req.csrfToken(),
       errors: [{ msg: 'El correo ya está registrado' }],
       user: {
         name,
