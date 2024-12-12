@@ -1,5 +1,6 @@
 import { check, validationResult } from 'express-validator';
 import User from '../models/User.model.js';
+import { generateToken } from '../helpers/tokens.js';
 
 const loginForm = (req, res) => {
   res.render('auth/login', {
@@ -42,21 +43,29 @@ const register = async (req, res) => {
     });
   }
 
+  // Extraer datos
+  const { name, email, password } = req.body;
+
   // Verificar que el usuario no exista
-  const userExist = await User.findOne({ where: { email: req.body.email } });
+  const userExist = await User.findOne({ where: { email } });
   if (userExist) {
     return res.render('auth/register', {
       page: 'Crear Cuenta',
       errors: [{ msg: 'El correo ya está registrado' }],
       user: {
-        name: req.body.name,
-        email: req.body.email
+        name,
+        email
       }
     });
   }
 
-  const usuario = await User.create(req.body);
-  res.json(usuario);
+  // Crear usuario
+  await User.create({
+    name,
+    email,
+    password,
+    token: generateToken()
+  });
 };
 
 const forgotPasswordForm = (req, res) => {
