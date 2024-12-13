@@ -1,7 +1,7 @@
 import { check, validationResult } from 'express-validator';
 import User from '../models/User.model.js';
 import { generateToken } from '../helpers/tokens.js';
-import { registrationEmail } from '../helpers/emails.js';
+import { registrationEmail, forgotPasswordEmail } from '../helpers/emails.js';
 
 const loginForm = (req, res) => {
   res.render('auth/login', {
@@ -112,14 +112,61 @@ const confirmAccount = async (req, res) => {
 
 const forgotPasswordForm = (req, res) => {
   res.render('auth/forgot-password', {
-    page: 'Recuperar tu acceso a Bienes Raices'
+    page: 'Recuperar tu acceso a Bienes Raices',
+    csrfToken: req.csrfToken()
   });
 };
+
+const resetPassword = async (req, res) => {
+  await check('email').isEmail().withMessage('Email no válido').run(req);
+
+  let result = validationResult(req);
+  if (!result.isEmpty()) {
+    return res.render('auth/forgot-password', {
+      page: 'Recuperar tu acceso a Bienes Raices',
+      csrfToken: req.csrfToken(),
+      errors: result.array()
+    });
+  }
+
+  const { email } = req.body;
+  // Verificar si el usuario existe
+  const user = await User.findOne({ where: { email } });
+  if (!user) {
+    return res.render('auth/forgot-password', {
+      page: 'Recuperar tu acceso a Bienes Raices',
+      csrfToken: req.csrfToken(),
+      errors: [{ msg: 'No existe una cuenta con ese correo' }]
+    });
+  }
+
+  // Generar token
+  user.token = generateToken();
+  await user.save();
+
+  // Enviar correo 
+  await forgotPasswordEmail({
+    name: user.name,
+    email: user.email,
+    token: user.token
+  });
+
+  res.render('templates/message', {
+    page: 'Correo enviado',
+    message: 'Hemos enviado un correo para restablecer tu contraseña'
+  });
+};
+
+const verifyToken = async (req, res) => {};
+const newPassword = async (req, res) => {};
 
 export {
   loginForm,
   registerForm,
   register,
   confirmAccount,
-  forgotPasswordForm
+  forgotPasswordForm,
+  resetPassword,
+  verifyToken,
+  newPassword
 };
