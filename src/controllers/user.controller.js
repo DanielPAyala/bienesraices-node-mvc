@@ -1,4 +1,5 @@
 import { check, validationResult } from 'express-validator';
+import bcrypt from 'bcrypt';
 import User from '../models/User.model.js';
 import { generateToken } from '../helpers/tokens.js';
 import { registrationEmail, forgotPasswordEmail } from '../helpers/emails.js';
@@ -144,7 +145,7 @@ const resetPassword = async (req, res) => {
   user.token = generateToken();
   await user.save();
 
-  // Enviar correo 
+  // Enviar correo
   await forgotPasswordEmail({
     name: user.name,
     email: user.email,
@@ -157,8 +158,66 @@ const resetPassword = async (req, res) => {
   });
 };
 
-const verifyToken = async (req, res) => {};
-const newPassword = async (req, res) => {};
+const verifyToken = async (req, res) => {
+  const { token } = req.params;
+
+  // Verificar si el token es válido
+  const user = await User.findOne({ where: { token } });
+
+  if (!user) {
+    return res.render('templates/message', {
+      page: 'Error al restablecer tu contraseña',
+      message: 'Token no válido',
+      error: true
+    });
+  }
+
+  // Mostrar formulario para restablecer contraseña
+  res.render('auth/reset-password', {
+    page: 'Restablecer Contraseña',
+    csrfToken: req.csrfToken()
+  });
+};
+const newPassword = async (req, res) => {
+  await check('password')
+    .isLength({ min: 6 })
+    .withMessage('La contraseña debe tener al menos 6 caracteres')
+    .run(req);
+
+  let result = validationResult(req);
+  if (!result.isEmpty()) {
+    return res.render('auth/reset-password', {
+      page: 'Restablecer Contraseña',
+      csrfToken: req.csrfToken(),
+      errors: result.array()
+    });
+  }
+
+  const { password } = req.body;
+  const { token } = req.params;
+
+  // Verificar si el token es válido
+  const user = await User.findOne({ where: { token } });
+
+  if (!user) {
+    return res.render('templates/message', {
+      page: 'Error al restablecer tu contraseña',
+      message: 'Token no válido',
+      error: true
+    });
+  }
+
+  // Actualizar contraseña
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(password, salt);
+  user.token = null;
+  await user.save();
+
+  res.render('auth/confirm-account', {
+    page: 'Contraseña Restablecida',
+    message: 'Contraseña actualizada correctamente'
+  });
+};
 
 export {
   loginForm,
