@@ -6,8 +6,56 @@ import { registrationEmail, forgotPasswordEmail } from '../helpers/emails.js';
 
 const loginForm = (req, res) => {
   res.render('auth/login', {
-    page: 'Iniciar Sesión'
+    page: 'Iniciar Sesión',
+    csrfToken: req.csrfToken()
   });
+};
+
+const authenticate = async (req, res) => {
+  // Validar campos
+  await check('email')
+    .notEmpty()
+    .withMessage('El email es obligatorio')
+    .run(req);
+  await check('password')
+    .notEmpty()
+    .withMessage('La contraseña es obligatoria')
+    .run(req);
+
+  let result = validationResult(req);
+  console.log(result.array());
+
+  // Verificar si hay errores
+  if (!result.isEmpty()) {
+    return res.render('auth/login', {
+      page: 'Iniciar Sesión',
+      csrfToken: req.csrfToken(),
+      errors: result.array()
+    });
+  }
+
+  const { email, password } = req.body;
+
+  // Verificar si el usuario existe y la contraseña es correcta
+  const user = await User.findOne({ where: { email } });
+  if (!user || !bcrypt.compareSync(password, user.password)) {
+    return res.render('auth/login', {
+      page: 'Iniciar Sesión',
+      csrfToken: req.csrfToken(),
+      errors: [{ msg: 'Email o contraseña incorrectos' }]
+    });
+  }
+
+  // Verificar cuenta confirmada
+  if (!user.confirmed) {
+    return res.render('auth/login', {
+      page: 'Iniciar Sesión',
+      csrfToken: req.csrfToken(),
+      errors: [{ msg: 'Confirma tu cuenta para iniciar sesión' }]
+    });
+  }
+
+  res.redirect('/');
 };
 
 const registerForm = (req, res) => {
@@ -221,6 +269,7 @@ const newPassword = async (req, res) => {
 
 export {
   loginForm,
+  authenticate,
   registerForm,
   register,
   confirmAccount,
