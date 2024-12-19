@@ -2,15 +2,18 @@ doctype html
 html(lang="en")
   head
     meta(charset="UTF-8")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
     title Bienes Raices | #{page}
-    link(rel="stylesheet", href="/css/styles.css")
+    link(rel="stylesheet" href="/css/styles.css")
   body(class="bg-gray-50")
 
     if navBar
       include ./header
+
     main(class="mx-auto container mt-10 px-2")
       block content
+
+    block scripts
 
     script#_bs_script_.
       //<![CDATA[
