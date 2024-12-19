@@ -5,4 +5,11 @@ const admin = (req, res) => {
   });
 };
 
-export { admin };
+const create = (req, res) => {
+  res.render('property/create', {
+    page: 'Crear Propiedad',
+    navBar: true
+  });
+};
+
+export { admin, create };
