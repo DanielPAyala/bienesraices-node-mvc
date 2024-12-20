@@ -28,6 +28,10 @@
       .latlng(position, 16)
       .run(function (error, result) {
         marker.bindPopup(result.address.LongLabel).openPopup();
+        document.querySelector('.street').textContent = result?.address?.Address ?? '';
+        document.querySelector('#street').value = result?.address?.Address ?? '';
+        document.querySelector('#lat').textContent = result?.latlng?.lat ?? '';
+        document.querySelector('#lng').textContent = result?.latlng?.lng ?? '';
       });
   });
 })();
