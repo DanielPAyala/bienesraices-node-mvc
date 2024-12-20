@@ -16,7 +16,7 @@
   \************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\nconsole.log('mapa.js');\n\n//# sourceURL=webpack://bienesraices-node-mvc/./src/js/mapa.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n(function () {\r\n  const lat = 20.67444163271174;\r\n  const lng = -103.38739216304566;\r\n  const mapa = L.map('mapa').setView([lat, lng], 16);\r\n  let marker;\r\n\r\n  const geocodeService = L.esri.Geocoding.geocodeService();\r\n\r\n  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {\r\n    attribution:\r\n      '&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'\r\n  }).addTo(mapa);\r\n\r\n  // Crear un pin personalizado\r\n  marker = new L.marker([lat, lng], {\r\n    draggable: true,\r\n    autoPan: true\r\n  }).addTo(mapa);\r\n\r\n  // Detectar el movimiento del pin\r\n  marker.on('moveend', function (e) {\r\n    marker = e.target;\r\n    const position = marker.getLatLng();\r\n    mapa.panTo(new L.LatLng(position.lat, position.lng));\r\n\r\n    geocodeService\r\n      .reverse()\r\n      .latlng(position, 16)\r\n      .run(function (error, result) {\r\n        marker.bindPopup(result.address.LongLabel).openPopup();\r\n      });\r\n  });\r\n})();\r\n\n\n//# sourceURL=webpack://bienesraices-node-mvc/./src/js/mapa.js?");
 
 /***/ })
 

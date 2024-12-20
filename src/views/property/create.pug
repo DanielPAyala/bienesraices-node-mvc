@@ -1,5 +1,8 @@
 extends ../layout/index
 
+block styles
+  link(rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css")
+
 block content
   div(class="py-10")
     h1(class="text-4xl my-10 font-extrabold text-center") Bienes
@@ -52,6 +55,8 @@ block content
                   while (m < 5) 
                     option(value=m)=m
                     - m++
+
+          div(id="mapa" class="h-96")
 
 block scripts
   script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js")
