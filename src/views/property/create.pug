@@ -19,6 +19,10 @@ block content
             label(class="block text-sm uppercase text-gray-500 mb-3 font-bold" for="title") Título de Anuncio
             input(class="w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400" placeholder="Título Propiedad, ej. Casa en la Playa" type="text" name="title" id="title")
 
+          div
+            label(class="block text-sm uppercase text-gray-500 mb-3 font-bold" for="description") Descripción
+            textarea(class="w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400" placeholder="Descripción de la propiedad" name="description" id="description")
+
           div(class="md:flex md:gap-4 space-y-5 md:space-y-0")
             div(class="md:w-1/2")
               label(class="block text-sm uppercase text-gray-500 mb-3 font-bold" for="category") Categoría
@@ -32,24 +36,24 @@ block content
 
           div(class="md:flex md:gap-4 space-y-5 md:space-y-0")
             div(class="md:w-1/2")
-              label(class="block text-sm uppercase text-gray-500 mb-3 font-bold" for="category") Habitaciones
-              select(class="w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400" type="text" name="category" id="category")
+              label(class="block text-sm uppercase text-gray-500 mb-3 font-bold" for="bedrooms") Habitaciones
+              select(class="w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400" type="text" name="bedrooms" id="bedrooms")
                 option(value="") - Seleccione -
                 - for (let i = 1; i < 5; i++) {
                   option(value=i)=i
                 - }
 
             div(class="md:w-1/2")
-              label(class="block text-sm uppercase text-gray-500 mb-3 font-bold" for="price") Estacionamiento
-              select(class="w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400" type="text" name="price" id="price")
+              label(class="block text-sm uppercase text-gray-500 mb-3 font-bold" for="parking") Estacionamiento
+              select(class="w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400" type="text" name="parking" id="parking")
                 option(value="") - Seleccione -
                 - let n = 0
                   while (n < 4) 
                     option(value=n) #{n++}
 
             div(class="md:w-1/2")
-              label(class="block text-sm uppercase text-gray-500 mb-3 font-bold" for="price") Baños
-              select(class="w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400" type="text" name="price" id="price")
+              label(class="block text-sm uppercase text-gray-500 mb-3 font-bold" for="bathrooms") Baños
+              select(class="w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400" type="text" name="bathrooms" id="bathrooms")
                 option(value="") - Seleccione -
                 - let m = 1
                   while (m < 5) 
