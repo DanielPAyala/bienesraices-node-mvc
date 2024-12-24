@@ -11,7 +11,8 @@
     "css": "npx tailwindcss -i ./public/css/tailwind.css -o ./public/css/styles.css --watch",
     "js": "npx webpack --watch",
     "client": "tailwindcss -i ./public/css/tailwind.css -o ./public/css/styles.css --watch | webpack --watch",
-    "db:import": "node src/seed/seeder.js -i"
+    "db:import": "node src/seed/seeder.js -i",
+    "db:delete": "node src/seed/seeder.js -d"
   },
   "repository": {
     "type": "git",
