@@ -1,6 +1,8 @@
 import { exit } from 'process';
 import Category from '../models/Category.model.js';
+import Price from '../models/Price.model.js';
 import categories from './categories.js';
+import prices from './prices.js';
 import db from '../config/db.js';
 
 const importData = async () => {
@@ -11,9 +13,12 @@ const importData = async () => {
     // Sync the model with the database
     await db.sync();
 
-    // Create the categories
-    await Category.bulkCreate(categories);
-    
+    // Create the categories and prices
+    await Promise.all([
+      Category.bulkCreate(categories),
+      Price.bulkCreate(prices)
+    ]);
+
     // Log the success message
     exit(0);
   } catch (error) {
