@@ -39,7 +39,8 @@ const save = async (req, res) => {
       navBar: true,
       categories,
       prices,
-      errors: result.array()
+      errors: result.array(),
+      data: req.body
     });
   }
 };
