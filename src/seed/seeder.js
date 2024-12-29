@@ -1,6 +1,5 @@
 import { exit } from 'process';
-import Category from '../models/Category.model.js';
-import Price from '../models/Price.model.js';
+import { Category, Price } from '../models/index.js';
 import categories from './categories.js';
 import prices from './prices.js';
 import db from '../config/db.js';
