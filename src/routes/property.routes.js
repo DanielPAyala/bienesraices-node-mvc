@@ -1,13 +1,15 @@
 import express from 'express';
 import { body } from 'express-validator';
 import { admin, create, save } from '../controllers/property.controller.js';
+import protectRoute from '../middleware/protegerRuta.js';
 
 const router = express.Router();
 
-router.get('/my-properties', admin);
-router.get('/properties/create', create);
+router.get('/my-properties', protectRoute, admin);
+router.get('/properties/create', protectRoute, create);
 router.post(
   '/properties/create',
+  protectRoute,
   body('title').notEmpty().withMessage('El título es requerido'),
   body('description')
     .notEmpty()
