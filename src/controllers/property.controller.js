@@ -51,6 +51,7 @@ const save = async (req, res) => {
     bedrooms,
     parking,
     bathrooms,
+    street,
     lat,
     lng
   } = req.body;
@@ -66,6 +67,7 @@ const save = async (req, res) => {
       bedrooms,
       parking,
       bathrooms,
+      street,
       lat,
       lng,
       userId,
