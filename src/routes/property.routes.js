@@ -1,6 +1,6 @@
 import express from 'express';
 import { body } from 'express-validator';
-import { admin, create, save } from '../controllers/property.controller.js';
+import { addImage, admin, create, save } from '../controllers/property.controller.js';
 import protectRoute from '../middleware/protegerRuta.js';
 
 const router = express.Router();
@@ -28,5 +28,7 @@ router.post(
   body('lat').notEmpty().withMessage('Selecciona la ubicación en el mapa'),
   save
 );
+
+router.get('/properties/add-image/:id', addImage);
 
 export default router;
