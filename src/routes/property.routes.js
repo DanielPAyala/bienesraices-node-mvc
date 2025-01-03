@@ -1,6 +1,11 @@
 import express from 'express';
 import { body } from 'express-validator';
-import { addImage, admin, create, save } from '../controllers/property.controller.js';
+import {
+  addImage,
+  admin,
+  create,
+  save
+} from '../controllers/property.controller.js';
 import protectRoute from '../middleware/protegerRuta.js';
 
 const router = express.Router();
@@ -29,6 +34,6 @@ router.post(
   save
 );
 
-router.get('/properties/add-image/:id', addImage);
+router.get('/properties/add-image/:id', protectRoute, addImage);
 
 export default router;
