@@ -6,7 +6,7 @@ import {
   create,
   save
 } from '../controllers/property.controller.js';
-import protectRoute from '../middleware/protegerRuta.js';
+import protectRoute from '../middleware/proteger-ruta.js';
 
 const router = express.Router();
 
