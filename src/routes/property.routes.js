@@ -35,5 +35,8 @@ router.post(
 );
 
 router.get('/properties/add-image/:id', protectRoute, addImage);
+router.post('/properties/add-image/:id', protectRoute, (req, res) => {
+  res.send('Imagen guardada');
+});
 
 export default router;

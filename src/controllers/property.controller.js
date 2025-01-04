@@ -108,7 +108,8 @@ const addImage = async (req, res) => {
   }
 
   res.render('property/add-image', {
-    page: 'Agregar Imagen'
+    page: 'Agregar Imagen',
+    csrfToken: req.csrfToken()
   });
 };
 
