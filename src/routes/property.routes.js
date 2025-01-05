@@ -4,9 +4,11 @@ import {
   addImage,
   admin,
   create,
-  save
+  save,
+  storeImage
 } from '../controllers/property.controller.js';
 import protectRoute from '../middleware/proteger-ruta.js';
+import upload from '../middleware/upload-image.js';
 
 const router = express.Router();
 
@@ -35,8 +37,11 @@ router.post(
 );
 
 router.get('/properties/add-image/:id', protectRoute, addImage);
-router.post('/properties/add-image/:id', protectRoute, (req, res) => {
-  res.send('Imagen guardada');
-});
+router.post(
+  '/properties/add-image/:id',
+  protectRoute,
+  upload.single('image'),
+  storeImage
+);
 
 export default router;

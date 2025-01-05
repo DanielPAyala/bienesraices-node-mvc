@@ -113,4 +113,40 @@ const addImage = async (req, res) => {
   });
 };
 
-export { admin, create, save, addImage };
+const storeImage = async (req, res, next) => {
+  const { id } = req.params;
+
+  // Validar que la propiedad exista
+  const property = await Property.findByPk(id);
+
+  if (!property) {
+    return res.redirect('/my-properties');
+  }
+
+  // Validar que la propiedad no esté publicada
+  if (property.published) {
+    return res.redirect('/my-properties');
+  }
+
+  // Validar que la propiedad sea del usuario autenticado
+  if (property.userId.toString() !== req.user.id.toString()) {
+    return res.redirect('/my-properties');
+  }
+
+  try {
+    // Almacenar la imagen y publicar la propiedad
+    property.image = req.file.filename;
+    property.published = true;
+    await property.save();
+
+    next();
+  } catch (error) {
+    console.log(error);
+    return res.render('property/add-image', {
+      page: 'Agregar Imagen',
+      csrfToken: req.csrfToken()
+    });
+  }
+};
+
+export { admin, create, save, addImage, storeImage };

@@ -11,10 +11,10 @@ block content
     h2(class="text-center text-2xl font-extrabold")=page
 
     div(class="bg-white shadow-md py-8 px-4 rounded mx-auto max-w-4xl my-10 md:px-10")
-      form(id="add-image" class="dropzone border-dashed border-2 w-full min:h-96 h-auto rounded flex-col justify-center items-center" action="/properties/" method="POST")
+      form(id="add-image" class="dropzone border-dashed border-2 w-full min:h-96 h-auto rounded flex-col justify-center items-center" action=`/properties/add-image/${property.id}` method="POST")
         input(type="hidden" name="_csrf" value=csrfToken)
 
-      input(type="submit" class="mt-5 w-full py-3 bg-indigo-600 hover:bg-indigo-700 round text-white font-bold uppercase cursor-pointer" value="Publicar Propiedad")
+      button(type="button" id="btnSubmit" class="mt-5 w-full py-3 bg-indigo-600 hover:bg-indigo-700 round text-white font-bold uppercase cursor-pointer") Publicar Propiedad
 
 block scripts
   script(src="/js/add-image.js")
