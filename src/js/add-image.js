@@ -1,5 +1,4 @@
 import { Dropzone } from 'dropzone';
-import { header, param } from 'express-validator';
 
 const token = document.querySelector('meta[name="csrf-token"]').content;
 
