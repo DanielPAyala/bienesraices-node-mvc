@@ -6,8 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node src/index.js",
-    "server": "npx nodemon src/index.js",
-    "dev": "nodemon src/index.js | browser-sync start --files 'src/views/**/*.pug, public/**/*.*'",
+    "dev": "nodemon src/index.js",
     "css": "npx tailwindcss -i ./public/css/tailwind.css -o ./public/css/styles.css --watch",
     "js": "npx webpack --watch",
     "client": "tailwindcss -i ./public/css/tailwind.css -o ./public/css/styles.css --watch | webpack --watch",
@@ -48,7 +47,6 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
-    "browser-sync": "^3.0.3",
     "nodemon": "^3.1.7",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.16",
