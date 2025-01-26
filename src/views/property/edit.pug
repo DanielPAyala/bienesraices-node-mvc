@@ -1,0 +1,95 @@
+extends ../layout/admin
+
+block styles
+  link(rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css")
+
+block content
+  div(class="py-10")
+    h1(class="text-4xl my-10 font-extrabold text-center") Bienes
+      span(class="font-normal")  Raices
+    h2(class="text-center text-2xl font-extrabold")=page
+
+    if errors
+      div(class="max-w-md mx-auto my-10")
+        each error in errors
+          p(class="bg-red-600 text-white uppercase text-xs text-center p-2 mb-1 font-bold")=error.msg
+
+
+    //- pre= JSON.stringify(data, null, 2)
+
+    div(class="bg-white shadow-md py-8 px-4 rounded mx-auto max-w-4xl my-10 md:px-10")
+      form(class="space-y-8" action=`/properties/edit/${data.id}` method="POST" autocomplete="off")
+        input(type="hidden" name="_csrf" value=csrfToken)
+        div(class="space-y-5")
+          h3(class="text-lg loading-6 font-medium text-gray-900") Información General
+          p(class="text-gray-600") Añade Información sobre la propiedad en venta 
+
+          div
+            label(class="block text-sm uppercase text-gray-500 mb-3 font-bold" for="title") Título de Anuncio
+            input(class="w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400" placeholder="Título Propiedad, ej. Casa en la Playa" type="text" name="title" id="title" value=data ? data.title : '')
+
+          div
+            label(class="block text-sm uppercase text-gray-500 mb-3 font-bold" for="description") Descripción
+            textarea(class="w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400" placeholder="Descripción de la propiedad" name="description" id="description")= data ? data.description : '' 
+
+          div(class="md:flex md:gap-4 space-y-5 md:space-y-0")
+            div(class="md:w-1/2")
+              label(class="block text-sm uppercase text-gray-500 mb-3 font-bold" for="category") Categoría
+              select(class="w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400" type="text" name="category" id="category")
+                option(value="") - Seleccione -
+                each category in categories
+                  option(value=category.id selected=data ? (data.categoryId == category.id || data.category == category.id) ? true : false : null)=category.name
+
+            div(class="md:w-1/2")
+              label(class="block text-sm uppercase text-gray-500 mb-3 font-bold" for="price") Precio
+              select(class="w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400" type="text" name="price" id="price")
+                option(value="") - Seleccione -
+                each price in prices
+                  option(value=price.id selected=data ? (data.priceId == price.id || data.price == price.id) ? true : false : null)=price.price
+
+          div(class="md:flex md:gap-4 space-y-5 md:space-y-0")
+            div(class="md:w-1/2")
+              label(class="block text-sm uppercase text-gray-500 mb-3 font-bold" for="bedrooms") Habitaciones
+              select(class="w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400" type="text" name="bedrooms" id="bedrooms")
+                option(value="") - Seleccione -
+                - for (let i = 1; i < 5; i++) {
+                  option(value=i selected=data ? data.bedrooms == i ? true : false : null)=i
+                - }
+
+            div(class="md:w-1/2")
+              label(class="block text-sm uppercase text-gray-500 mb-3 font-bold" for="parking") Estacionamiento
+              select(class="w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400" type="text" name="parking" id="parking")
+                option(value="") - Seleccione -
+                - let n = 0
+                  while (n < 4) 
+                    option(value=n selected=data ? data.parking == n ? true : false : null) #{n++}
+
+            div(class="md:w-1/2")
+              label(class="block text-sm uppercase text-gray-500 mb-3 font-bold" for="bathrooms") Baños
+              select(class="w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400" type="text" name="bathrooms" id="bathrooms")
+                option(value="") - Seleccione -
+                - let m = 1
+                  while (m < 5) 
+                    option(value=m selected=data ? data.bathrooms == m ? true : false : null)=m
+                    - m++
+
+          div(class="border-gray-200 border-t py-5 space-y-5")
+            h3(class="text-lg loading-6 font-medium text-gray-900") Ubicación
+            p(class="text-gray-600") Añade la ubicación de la propiedad
+            div(id="mapa" class="h-96")
+
+            div
+              p.street= data ? data.street : ''
+
+            input(type="hidden" name="street" id="street" value=data ? data.street : '')
+            input(type="hidden" name="lat" id="lat" value=data ? data.lat : '')
+            input(type="hidden" name="lng" id="lng" value=data ? data.lng : '')
+
+          input(type="submit" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 round text-white font-bold uppercase cursor-pointer" value="Guardar Cambios")
+
+block scripts
+  script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js")
+  script(src="https://unpkg.com/esri-leaflet@3.0.8/dist/esri-leaflet.js")
+  script(src="https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.js")
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geosearch/2.7.0/bundle.min.js")
+  script(src="/js/map.js")

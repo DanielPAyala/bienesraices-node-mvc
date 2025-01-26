@@ -2,7 +2,6 @@ import { validationResult } from 'express-validator';
 import { Category, Price, Property } from '../models/index.js';
 
 const admin = async (req, res) => {
-
   const properties = await Property.findAll({
     where: {
       userId: req.user.id
@@ -162,4 +161,107 @@ const storeImage = async (req, res, next) => {
   }
 };
 
-export { admin, create, save, addImage, storeImage };
+const edit = async (req, res) => {
+  // Validar que la propiedad exista
+  const property = await Property.findByPk(req.params.id);
+
+  if (!property) {
+    return res.redirect('/my-properties');
+  }
+
+  // Validar que la propiedad sea del usuario autenticado
+  if (property.userId.toString() !== req.user.id.toString()) {
+    return res.redirect('/my-properties');
+  }
+
+  // Obtener las categorías y precios
+  const [categories, prices] = await Promise.all([
+    Category.findAll(),
+    Price.findAll()
+  ]);
+
+  res.render('property/edit', {
+    page: 'Editar Propiedad',
+    csrfToken: req.csrfToken(),
+    categories,
+    prices,
+    data: property
+  });
+};
+
+const saveChanges = async (req, res) => {
+  let result = validationResult(req);
+
+  const [categories, prices] = await Promise.all([
+    Category.findAll(),
+    Price.findAll()
+  ]);
+
+  if (!result.isEmpty()) {
+    return res.render('property/edit', {
+      page: 'Editar Propiedad',
+      csrfToken: req.csrfToken(),
+      categories,
+      prices,
+      errors: result.array(),
+      data: req.body
+    });
+  }
+
+  // Validar que la propiedad exista
+  const property = await Property.findByPk(req.params.id);
+
+  if (!property) {
+    return res.redirect('/my-properties');
+  }
+
+  // Validar que la propiedad sea del usuario autenticado
+  if (property.userId.toString() !== req.user.id.toString()) {
+    return res.redirect('/my-properties');
+  }
+
+  // Actualizar la propiedad
+  try {
+    const {
+      title,
+      description,
+      category: categoryId,
+      price: priceId,
+      bedrooms,
+      parking,
+      bathrooms,
+      street,
+      lat,
+      lng
+    } = req.body;
+
+    property.set({
+      title,
+      description,
+      categoryId,
+      priceId,
+      bedrooms,
+      parking,
+      bathrooms,
+      street,
+      lat,
+      lng
+    });
+
+    await property.save();
+
+    res.redirect('/my-properties');
+  } catch (error) {
+    console.log(error);
+    return res.render('property/edit', {
+      page: 'Editar Propiedad',
+      csrfToken: req.csrfToken(),
+      categories,
+      prices,
+      errors: [{ msg: error.message }],
+      data: req.body
+    });
+  }
+};
+
+export { admin, create, save, addImage, storeImage, edit, saveChanges };
