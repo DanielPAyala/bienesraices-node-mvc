@@ -1,3 +1,4 @@
+import { unlink } from 'node:fs/promises';
 import { validationResult } from 'express-validator';
 import { Category, Price, Property } from '../models/index.js';
 
@@ -14,6 +15,7 @@ const admin = async (req, res) => {
 
   res.render('property/admin', {
     page: 'Mis Propiedades',
+    csrfToken: req.csrfToken(),
     properties
   });
 };
@@ -264,4 +266,38 @@ const saveChanges = async (req, res) => {
   }
 };
 
-export { admin, create, save, addImage, storeImage, edit, saveChanges };
+const deleteProperty = async (req, res) => {
+  // Validar que la propiedad exista
+  const property = await Property.findByPk(req.params.id);
+
+  if (!property) {
+    return res.redirect('/my-properties');
+  }
+
+  // Validar que la propiedad sea del usuario autenticado
+  if (property.userId.toString() !== req.user.id.toString()) {
+    return res.redirect('/my-properties');
+  }
+
+  // Eliminar la imagen de la propiedad
+  try {
+    await unlink(`public/uploads/${property.image}`);
+  } catch (error) {
+    console.error(`Error deleting image file: ${error.message}`);
+  }
+  // Eliminar la propiedad
+  await property.destroy();
+
+  res.redirect('/my-properties');
+};
+
+export {
+  admin,
+  create,
+  save,
+  addImage,
+  storeImage,
+  edit,
+  saveChanges,
+  deleteProperty
+};

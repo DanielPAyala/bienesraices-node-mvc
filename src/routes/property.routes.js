@@ -7,7 +7,8 @@ import {
   save,
   storeImage,
   edit,
-  saveChanges
+  saveChanges,
+  deleteProperty
 } from '../controllers/property.controller.js';
 import protectRoute from '../middleware/proteger-ruta.js';
 import upload from '../middleware/upload-image.js';
@@ -69,5 +70,7 @@ router.post(
   body('lat').notEmpty().withMessage('Selecciona la ubicación en el mapa'),
   saveChanges
 );
+
+router.post('/properties/delete/:id', protectRoute, deleteProperty);
 
 export default router;
