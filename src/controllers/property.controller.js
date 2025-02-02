@@ -3,21 +3,53 @@ import { validationResult } from 'express-validator';
 import { Category, Price, Property } from '../models/index.js';
 
 const admin = async (req, res) => {
-  const properties = await Property.findAll({
-    where: {
-      userId: req.user.id
-    },
-    include: [
-      { model: Category, as: 'category' },
-      { model: Price, as: 'price' }
-    ]
-  });
+  // Obtener query string
+  const { page: currrentPage } = req.query;
+  const expression = /^[0-9]$/;
 
-  res.render('property/admin', {
-    page: 'Mis Propiedades',
-    csrfToken: req.csrfToken(),
-    properties
-  });
+  // Validar que el query string sea un número
+  if (!expression.test(currrentPage)) {
+    return res.redirect('/my-properties?page=1');
+  }
+
+  try {
+    // Paginación
+    const limit = 1;
+    const offset = currrentPage * limit - limit;
+
+    const [properties, total] = await Promise.all([
+      Property.findAll({
+        limit,
+        offset,
+        where: {
+          userId: req.user.id
+        },
+        include: [
+          { model: Category, as: 'category' },
+          { model: Price, as: 'price' }
+        ]
+      }),
+      Property.count({
+        where: {
+          userId: req.user.id
+        }
+      })
+    ]);
+
+    res.render('property/admin', {
+      page: 'Mis Propiedades',
+      csrfToken: req.csrfToken(),
+      properties,
+      pages: Math.ceil(total / limit),
+      currentPage: parseInt(currrentPage),
+      total,
+      limit,
+      offset
+    });
+  } catch (error) {
+    console.log(error);
+    res.redirect('/my-properties?page=1');
+  }
 };
 
 const create = async (req, res) => {

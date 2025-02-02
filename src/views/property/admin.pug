@@ -35,5 +35,33 @@ block content
                     input(type="hidden" name="_csrf", value=csrfToken)
                     input(type="submit" class="w-full px-2 py-2 md:py-1 text-xs leading-5 font-semibold rounded cursor-pointer bg-red-100 text-red-800" value="Eliminar")
 
+        div(class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6")
+          div(class="flex-1 flex justify-between sm:hidden")
+            a(href=`/my-properties?page=${currentPage - 1}` class=`${currentPage === 1 ? 'pointer-events-none' : ''} relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50`) Anterior
+
+            a(href=`/my-properties?page=${currentPage + 1}` class=`${currentPage === pages ? 'pointer-events-none' : ''} 
+            relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50`) Siguiente
+
+          div(class="hidden sm:flex-1 sm:flex sm:flex-col")
+            //- p(class="text-sm text-gray-700 gap-2") Mostrando 
+            //-   span(class="font-medium")=currentPage
+            //-   |  de 
+            //-   span(class="font-medium")=pages
+            //-   |  páginas
+
+            p(class="text-sm text-gray-700 gap-2") Mostrando 
+              span(class="font-medium") #{offset + 1} 
+              |  a 
+              span(class="font-medium") #{total < limit + offset ? total : limit + offset}
+              |  de 
+              span(class="font-medium") #{total}
+              |  resultados
+
+          div(class="hidden sm:block")
+            nav(class="relative z-0 inline-flex rounded-md shadow-md")
+              - var n = 1
+                while n <= pages
+                  a(href=`/my-properties?page=${n}` class=`${n == currentPage ? 'bg-indigo-600 text-white font-bold' : 'bg-white text-gray-600 font-normal'} hover:bg-indigo-500 hover:text-white relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm`) #{n++}
+
     else
       p(class="text-center") No hay propiedades publicadas
