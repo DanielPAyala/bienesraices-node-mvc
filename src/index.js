@@ -1,8 +1,10 @@
 import express from 'express';
 import csrf from 'csurf';
 import cookieParser from 'cookie-parser';
+import AppRoutes from './routes/app.routes.js';
 import UserRoutes from './routes/user.routes.js';
 import PropertyRoutes from './routes/property.routes.js';
+import ApiRoutes from './routes/api.routes.js';
 import db from './config/db.js';
 
 // Crear el servidor
@@ -34,8 +36,10 @@ app.set('views', './src/views');
 app.use(express.static('public'));
 
 // Rutas
+app.use('/', AppRoutes);
 app.use('/auth', UserRoutes);
 app.use('/', PropertyRoutes);
+app.use('/api', ApiRoutes);
 
 // Definir el puerto y arrancar el servidor
 const port = process.env.PORT || process.env.SERVER_PORT;
