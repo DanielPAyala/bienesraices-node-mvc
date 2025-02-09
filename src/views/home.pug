@@ -7,8 +7,25 @@ block content
   div(class="py-5")
     h1(class="text-center text-4xl font-extrabold") Ubicación en el mapa
 
+    div(class="flex flex-col md:flex-row items-center py-10 gap-6")
+      h2(class="text-sm uppercase text-gray-800 font-bold") Filtrar Propiedades:
+
+      div(class="w-full md:w-auto flex items-center gap-2")
+        label(for="categories" class="text-sm w-28 uppercase text-gray-500 font-bold") Categorías
+        select(id="categories" class="bg-white w-full px-3 py-2 border border-gray-300 rounded shadow")
+          option(value="") - Seleccione -
+          each category in categories
+            option(value=category.id)= category.name
+
+      div(class="w-full md:w-auto flex items-center gap-2")
+        label(for="prices" class="text-sm w-28 uppercase text-gray-500 font-bold") Precios
+        select(id="prices" class="bg-white w-full px-3 py-2 border border-gray-300 rounded shadow")
+          option(value="") - Seleccione -
+          each price in prices
+            option(value=price.id)= price.price
+
     div(id="home-map" class="h-[600px] mt-5")
-  
+
 block scripts
   script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js")
   script(src="/js/home-map.js")
